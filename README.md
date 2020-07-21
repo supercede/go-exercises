@@ -1,2 +1,3 @@
 # go-exercises
-Projects created while learning Go
+
+A repository of Projects created while learning Go
