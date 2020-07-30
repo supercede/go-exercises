@@ -1,47 +1,20 @@
 [
- {
-  "Id": 1,
-  "Name": "Being Stupid",
-  "Author": "Patrick Star",
-  "PubData": {
-   "Year": 2020,
-   "Month": "March"
+  {
+    "Id": 1,
+    "Name": "The Bottled Leopard",
+    "Author": "Chukwuemeka Ike",
+    "PubData": {
+      "Year": 2020,
+      "Month": "March"
+    }
+  },
+  {
+    "Id": 2,
+    "Name": "Ajala's Calabash",
+    "Author": "Forgotten",
+    "PubData": {
+      "Year": 2007,
+      "Month": "March"
+    }
   }
- },
- {
-  "Id": 2,
-  "Name": "Being Stupid",
-  "Author": "Patrick Star",
-  "PubData": {
-   "Year": 2020,
-   "Month": "March"
-  }
- },
- {
-  "Id": 3,
-  "Name": "Adelaide",
-  "Author": "Kola Onadipe",
-  "PubData": {
-   "Year": 2007,
-   "Month": "April"
-  }
- },
- {
-  "Id": 4,
-  "Name": "Catching Jellyfishes",
-  "Author": "Spongebob",
-  "PubData": {
-   "Year": 2020,
-   "Month": "March"
-  }
- },
- {
-  "Id": 5,
-  "Name": "",
-  "Author": "Spongebob",
-  "PubData": {
-   "Year": 2020,
-   "Month": "March"
-  }
- }
 ]
