@@ -1,0 +1,4 @@
+- path: '/handler'
+  url: 'https://github.com/gophercises/handler'
+- path: '/handler-final'
+  url: 'https://github.com/gophercises/handler/tree/solution'
