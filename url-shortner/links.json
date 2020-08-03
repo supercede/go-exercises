@@ -1,0 +1,14 @@
+[
+  {
+    "path": "/fb123",
+    "url": "https://facebook.com"
+  },
+  {
+    "path": "/googl",
+    "url": "https://google.com"
+  },
+  {
+    "path": "/twttr",
+    "url": "https://twitter.com"
+  }
+]
