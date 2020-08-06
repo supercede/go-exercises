@@ -4,17 +4,26 @@
     "Name": "The Bottled Leopard",
     "Author": "Chukwuemeka Ike",
     "PubData": {
-      "Year": 2020,
+      "Year": 200,
       "Month": "March"
     }
   },
   {
     "Id": 2,
-    "Name": "Ajala's Calabash",
-    "Author": "Forgotten",
+    "Name": "Harry Potter and the Philosopher's Stone",
+    "Author": "J.K Rowling",
     "PubData": {
-      "Year": 2007,
-      "Month": "March"
+      "Year": 1997,
+      "Month": "June"
+    }
+  },
+  {
+    "Id": 3,
+    "Name": "The Great Book",
+    "Author": "Boyam Griff",
+    "PubData": {
+      "Year": 1773,
+      "Month": "August"
     }
   }
 ]

@@ -1,14 +1,13 @@
-package helpers
+package books
 
 import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-
-	"github.com/supercede/go-exercises/go-crud/schemas"
+	// "github.com/supercede/go-exercises/go-crud/books"
 )
 
-func ValidateBook(r schemas.Book) (bool, error) {
+func validateBook(r book) (bool, error) {
 	switch true {
 	case r.Name == "":
 		return false, fmt.Errorf("Name is required")
@@ -23,7 +22,7 @@ func ValidateBook(r schemas.Book) (bool, error) {
 	}
 }
 
-func ToJson(entry interface{}) (string, error) {
+func toJSON(entry interface{}) (string, error) {
 	b, err := json.Marshal(entry)
 	if err != nil {
 		return "Error", err
@@ -32,12 +31,12 @@ func ToJson(entry interface{}) (string, error) {
 	return string(b), nil
 }
 
-func Remove(s []schemas.Book, i int) []schemas.Book {
+func remove(s []book, i int) []book {
 	s[i] = s[len(s)-1]
 	return s[:len(s)-1]
 }
 
-func WriteFile(data []schemas.Book, entry schemas.Book) {
+func writeFile(data []book, entry book) {
 	data = append(data, entry)
 	file, _ := json.MarshalIndent(data, "", "  ")
 	_ = ioutil.WriteFile("books.json", file, 0644)

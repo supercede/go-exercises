@@ -1,13 +1,13 @@
-package schemas
+package books
 
-type Pub struct {
+type pub struct {
 	Year  float64
 	Month string
 }
 
-type Book struct {
+type book struct {
 	Id      int
 	Name    string
 	Author  string
-	PubData Pub
+	PubData pub
 }
