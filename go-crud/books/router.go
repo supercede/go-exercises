@@ -6,13 +6,13 @@ import (
 
 func resourceHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-	case "GET":
+	case http.MethodGet:
 		getBook(w, r)
 		return
-	case "PATCH":
+	case http.MethodPatch:
 		updateBook(w, r)
 		return
-	case "DELETE":
+	case http.MethodDelete:
 		deleteBook(w, r)
 		return
 	default:

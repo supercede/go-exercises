@@ -1,13 +1,13 @@
 package books
 
-type pub struct {
+type Pub struct {
 	Year  float64
 	Month string
 }
 
-type book struct {
-	Id      int
+type Book struct {
+	// Id      int
 	Name    string
 	Author  string
-	PubData pub
+	PubData Pub
 }
