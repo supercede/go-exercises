@@ -3,11 +3,11 @@ package books
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	// "github.com/supercede/go-exercises/go-crud/books"
+
+	"github.com/supercede/go-exercises/go-crud/models"
 )
 
-func validateBook(r Book) (bool, error) {
+func validateBook(r models.Book) (bool, error) {
 	switch true {
 	case r.Name == "":
 		return false, fmt.Errorf("Name is required")
@@ -23,21 +23,10 @@ func validateBook(r Book) (bool, error) {
 }
 
 func toJSON(entry interface{}) (string, error) {
-	b, err := json.Marshal(entry)
+	b, err := json.MarshalIndent(entry, "", "  ")
 	if err != nil {
 		return "Error", err
 	}
 
 	return string(b), nil
-}
-
-func remove(s []Book, i int) []Book {
-	s[i] = s[len(s)-1]
-	return s[:len(s)-1]
-}
-
-func writeFile(data []Book, entry Book) {
-	data = append(data, entry)
-	file, _ := json.MarshalIndent(data, "", "  ")
-	_ = ioutil.WriteFile("books.json", file, 0644)
 }
