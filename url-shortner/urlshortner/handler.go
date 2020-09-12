@@ -9,37 +9,37 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func readYAMLFile() map[string]string {
+func readYAMLFile(path string) map[string]string {
 	allLinks := []map[string]string{}
 
-	yamlFile, err := ioutil.ReadFile("links.yaml")
+	yamlFile, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatalf("yamlFile.Get err #%v ", err)
 	}
 
 	err = yaml.Unmarshal(yamlFile, &allLinks)
 	if err != nil {
-		log.Fatalf("Unmarshal: %v", err)
+		log.Fatalf("Failed to parse yaml file: %v", err)
 	}
 
 	mappedLinks := parseLinksIntoMap(allLinks)
-
 	return mappedLinks
 }
 
-func readJSONFile() map[string]string {
+func readJSONFile(path string) map[string]string {
 	links := []map[string]string{}
 
-	jsonFile, err := ioutil.ReadFile("links.json")
-
+	jsonFile, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Fatalf("jsonFile.Get err #%v ", err)
 	}
 
 	err = json.Unmarshal(jsonFile, &links)
+	if err != nil {
+		log.Fatalf("Failed to parse file data into json format: #%v ", err)
+	}
 
 	mappedLinks := parseLinksIntoMap(links)
-
 	return mappedLinks
 }
 
@@ -50,7 +50,6 @@ func parseLinksIntoMap(allLinks []map[string]string) map[string]string {
 		key := entry["path"]
 		links[key] = entry["url"]
 	}
-
 	return links
 }
 
@@ -66,14 +65,12 @@ func MapHandler(pathsToUrls map[string]string, fallback http.Handler) http.Handl
 	}
 }
 
-func YAMLHandler(fallback http.HandlerFunc) http.HandlerFunc {
-	mappedLinks := readYAMLFile()
-
+func YAMLHandler(fallback http.HandlerFunc, path string) http.HandlerFunc {
+	mappedLinks := readYAMLFile(path)
 	return MapHandler(mappedLinks, fallback)
 }
 
-func JSONHandler(fallback http.Handler) http.HandlerFunc {
-	mappedLinks := readJSONFile()
-
+func JSONHandler(fallback http.Handler, path string) http.HandlerFunc {
+	mappedLinks := readJSONFile(path)
 	return MapHandler(mappedLinks, fallback)
 }

@@ -14,7 +14,7 @@ type problem struct {
 // Handles runtime errors
 func handleError(e error, message string) {
 	if e != nil {
-		fmt.Printf(message)
+		fmt.Println(message)
 		os.Exit(1)
 	}
 }

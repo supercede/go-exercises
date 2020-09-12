@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/supercede/go-exercises/go-crud/data"
@@ -29,19 +30,18 @@ var h *Handler = NewHandler(s)
 func TestCreateBook(t *testing.T) {
 	tt := []struct {
 		name       string
-		data       []byte
+		data       string
 		statusCode int
 	}{
-		{"incomplete data", []byte(`{"name":"Adam's apple"}`), http.StatusBadRequest},
-		{"incompatible type", []byte(`{"name":"Adam's apple", "author": "Bala Samuel", "pubData": {"month":"April","year": "2020"}}`), http.StatusBadRequest},
-		{"complete data", []byte(`{"name":"Adam's apple", "author": "Bala Samuel", "pubData": {"month":"April","year": 2020}}`), http.StatusOK},
-		{"Empty Request Body", []byte(``), http.StatusBadRequest},
+		{"incomplete data", `{"name":"Adam's apple"}`, http.StatusBadRequest},
+		{"incompatible type", `{"name":"Adam's apple", "author": "Bala Samuel", "pubData": {"month":"April","year": "2020"}}`, http.StatusBadRequest},
+		{"complete data", `{"name":"Adam's apple", "author": "Bala Samuel", "pubData": {"month":"April","year": 2020}}`, http.StatusOK},
+		{"Empty Request Body", ``, http.StatusBadRequest},
 	}
-	// Edge cases
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
-			req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/books", bytes.NewBuffer(tc.data))
+			req, err := http.NewRequest(http.MethodPost, "http://localhost:8080/books", bytes.NewBufferString(tc.data))
 
 			if err != nil {
 				t.Fatalf("Could not create request: %v", err)
@@ -82,13 +82,14 @@ func TestGetBooks(t *testing.T) {
 
 	m := make(map[string]models.Book)
 	err = json.Unmarshal(books, &m)
+	if err != nil {
+		t.Fatalf("Failed to parse data: #%v ", err)
+	}
 
 	iEquals := reflect.DeepEqual(m, s.Books)
-
 	if !iEquals {
 		t.Errorf("Expected %v to equal %v", m, s.Books)
 	}
-
 }
 
 func TestGetBook(t *testing.T) {
@@ -130,15 +131,14 @@ func TestGetBook(t *testing.T) {
 
 				var b models.Book
 				err = json.Unmarshal(book, &b)
-				iEquals := reflect.DeepEqual(b, s.Books[bookList[0].Id])
+				if err != nil {
+					t.Fatalf("Failed to parse data: #%v ", err)
+				}
 
+				iEquals := reflect.DeepEqual(b, s.Books[bookList[0].Id])
 				if !iEquals {
 					t.Errorf("Expected %v to equal %v", b, s.Books)
 				}
-			}
-
-			if err != nil {
-				t.Fatalf("Could not read response: %v", err)
 			}
 		})
 	}
@@ -150,20 +150,19 @@ func TestPatchBook(t *testing.T) {
 	tt := []struct {
 		name       string
 		id         string
-		data       []byte
+		data       string
 		statusCode int
 	}{
-		{"valid data", bookList[0].Id, []byte(`{"name":"Stole something"}`), http.StatusOK},
-		{"Non existing Id", "1273bdbvfy44ui3", []byte(`{"name":"Stole something"}`), http.StatusNotFound},
-		{"Invalid Data", bookList[0].Id, []byte(`{"pubData": {"month":"April","year": "Somalia"}}`), http.StatusBadRequest},
-		{"Empty Request Body", bookList[0].Id, []byte(""), http.StatusBadRequest},
+		{"valid data", bookList[0].Id, `{"name":"Stole something"}`, http.StatusOK},
+		{"Non existing Id", "1273bdbvfy44ui3", `{"name":"Stole something"}`, http.StatusNotFound},
+		{"Invalid Data", bookList[0].Id, `{"pubData": {"month":"April","year": "Somalia"}}`, http.StatusBadRequest},
+		{"Empty Request Body", bookList[0].Id, "", http.StatusBadRequest},
 	}
 
 	for _, tc := range tt {
 		t.Run(tc.name, func(t *testing.T) {
 			url := "http://localhost:8080/books/" + tc.id
-			req, err := http.NewRequest(http.MethodPatch, url, bytes.NewBuffer(tc.data))
-
+			req, err := http.NewRequest(http.MethodPatch, url, bytes.NewBufferString(tc.data))
 			if err != nil {
 				t.Fatalf("Could not create request: %v", err)
 			}
@@ -185,15 +184,14 @@ func TestPatchBook(t *testing.T) {
 
 				var b models.Book
 				err = json.Unmarshal(book, &b)
-				iEquals := reflect.DeepEqual(b, s.Books[bookList[0].Id])
+				if err != nil {
+					t.Fatalf("Failed to parse data: #%v ", err)
+				}
 
+				iEquals := reflect.DeepEqual(b, s.Books[bookList[0].Id])
 				if !iEquals {
 					t.Errorf("Expected %v to equal %v", b, s.Books)
 				}
-			}
-
-			if err != nil {
-				t.Fatalf("Could not read response: %v", err)
 			}
 		})
 	}
@@ -234,18 +232,11 @@ func TestDeleteBook(t *testing.T) {
 				if err != nil {
 					t.Fatalf("Could not read response: %v", err)
 				}
+				b := string(book)
 
-				var b models.Book
-				err = json.Unmarshal(book, &b)
-				iEquals := reflect.DeepEqual(b, s.Books[bookList[0].Id])
-
-				if !iEquals {
-					t.Errorf("Expected %v to equal %v", b, s.Books)
+				if !strings.Contains(b, tc.id) {
+					t.Errorf("%v should contain %v", b, tc.id)
 				}
-			}
-
-			if err != nil {
-				t.Fatalf("Could not read response: %v", err)
 			}
 		})
 	}
