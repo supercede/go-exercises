@@ -26,7 +26,7 @@ go build .
 ## Routes
 
 - `GET` `/books` - Get all books
-- `POST` `/books/add` - Add a book
+- `POST` `/books` - Add a book
 - `GET` `/books/{id}` - Get book with given path Id
 - `DELETE` `/books/{id}` - delete book with given path Id
 - `PATCH` `/books/{id}` - Update book with given path Id
