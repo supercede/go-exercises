@@ -36,7 +36,6 @@ func (h *Handler) createBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = validateBook(b)
-
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -81,14 +80,12 @@ func (h *Handler) getBook(w http.ResponseWriter, r *http.Request) {
 
 	id := strings.TrimPrefix(r.URL.Path, "/books/")
 	intID, err := strconv.Atoi(id)
-
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
 	book, err := store.GetBook(intID)
-
 	if err != nil {
 		http.Error(w, "Book Not found", 404)
 		return
@@ -126,7 +123,6 @@ func (h *Handler) updateBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	book, err := store.UpdateBook(intID, b)
-
 	if err != nil {
 		http.Error(w, err.Error(), 404)
 		return
@@ -152,7 +148,6 @@ func (h *Handler) deleteBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = store.RemoveBook(intID)
-
 	if err != nil {
 		http.Error(w, "Book Not found", 404)
 		return

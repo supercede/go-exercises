@@ -68,7 +68,6 @@ func (b *BoltStore) AddBook(book Book) (error, *Book) {
 		}
 		return nil
 	})
-
 	if err != nil {
 		return errors.Wrap(err, "could not update db"), nil
 	}
@@ -93,7 +92,6 @@ func (b *BoltStore) AllBooks() ([]Book, error) {
 		}
 		return nil
 	})
-
 	if err != nil {
 		return nil, err
 	}
