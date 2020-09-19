@@ -87,7 +87,7 @@ func (b *BoltStore) AllBooks() ([]Book, error) {
 			err := json.Unmarshal(v, &book)
 
 			if err != nil {
-				errors.Wrap(err, "invalid result type")
+				return errors.Wrap(err, "invalid result type")
 			}
 			books = append(books, *book)
 		}
@@ -159,6 +159,6 @@ func itob(v int) []byte {
 }
 
 // Binary to integer
-func btoi(b []byte) int {
-	return int(binary.BigEndian.Uint64(b))
-}
+// func btoi(b []byte) int {
+// 	return int(binary.BigEndian.Uint64(b))
+// }
