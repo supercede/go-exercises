@@ -25,7 +25,7 @@ func makeMapToSlice(m map[string]models.Book) []models.Book {
 }
 
 var s *data.Store = data.NewStore("test.json")
-var h *Handler = NewHandler(s)
+var h *Handler = newHandler(s)
 
 func TestCreateBook(t *testing.T) {
 	tt := []struct {

@@ -36,7 +36,7 @@ func (h *Handler) allBooksRouteHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Router(s *data.Store) *http.ServeMux {
-	handler := NewHandler(s)
+	handler := newHandler(s)
 	mux := http.NewServeMux()
 	mux.HandleFunc("/books", handler.allBooksRouteHandler)
 	mux.HandleFunc("/books/", handler.singleBookRouteHandler)
