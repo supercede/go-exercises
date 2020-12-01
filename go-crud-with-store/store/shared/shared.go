@@ -9,7 +9,7 @@ type Storage interface {
 	RemoveBook(id int) error
 	GetBook(id int) (models.Book, error)
 	UpdateBook(id int, b models.Book) (models.Book, error)
-	GetBooks() map[int]models.Book
+	GetBooks() ([]models.Book, error)
 	ReadFromFile() error
 	WriteToFile() error
 }

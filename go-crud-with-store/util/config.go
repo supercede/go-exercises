@@ -8,6 +8,7 @@ import (
 type EnvVariables struct {
 	DatabaseType string
 	FileDBPath   string
+	BoltDBName   string
 }
 
 func GetConfig() (EnvVariables, error) {

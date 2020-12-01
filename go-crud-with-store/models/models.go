@@ -6,7 +6,7 @@ type Pub struct {
 }
 
 type Book struct {
-	Id      int
+	ID      int
 	Name    string
 	Author  string
 	PubData Pub

@@ -88,7 +88,7 @@ func (s *FileStore) ReadFromFile() error {
 // AddBook adds a book to the store
 func (s *FileStore) AddBook(b models.Book) (models.Book, error) {
 	id := generateID()
-	b.Id = id
+	b.ID = id
 	s.mu.Lock()
 	s.Books[id] = b
 	s.mu.Unlock()
@@ -101,6 +101,7 @@ func (s *FileStore) RemoveBook(id int) error {
 
 	if ok {
 		delete(s.Books, id)
+		return nil
 	}
 	return fmt.Errorf("Book with Id %v not found", id)
 }
@@ -141,6 +142,12 @@ func (s *FileStore) UpdateBook(id int, b models.Book) (models.Book, error) {
 	return models.Book{}, fmt.Errorf("Book with Id %v not found", id)
 }
 
-func (s *FileStore) GetBooks() map[int]models.Book {
-	return s.Books
+func (s *FileStore) GetBooks() ([]models.Book, error) {
+	books := make([]models.Book, 0, len(s.Books))
+
+	for _, book := range s.Books {
+		books = append(books, book)
+	}
+
+	return books, nil
 }

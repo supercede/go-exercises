@@ -58,13 +58,18 @@ func (h *Handler) createBook(w http.ResponseWriter, r *http.Request) {
 
 func (h *Handler) getBooks(w http.ResponseWriter, r *http.Request) {
 	store := h.store
-	books, err := toJSON(store.GetBooks())
+	books, err := store.GetBooks()
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
 
+	jsonBooks, err := toJSON(books)
 	if err != nil {
 		fmt.Printf("Error: %s", err.Error())
 	}
 
-	fmt.Fprint(w, books)
+	fmt.Fprint(w, jsonBooks)
 }
 
 func (h *Handler) getBook(w http.ResponseWriter, r *http.Request) {
