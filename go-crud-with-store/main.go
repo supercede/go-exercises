@@ -34,19 +34,6 @@ func main() {
 	if database == "filestore" {
 		newStore.ReadFromFile()
 	}
-
-	if database == "filestore" {
-		go func() {
-			ticker := time.NewTicker(5 * time.Second)
-
-			for range ticker.C {
-				fmt.Println("here")
-
-				newStore.WriteToFile()
-			}
-		}()
-	}
-
 	handler := books.Router(newStore)
 
 	s := &http.Server{
@@ -66,6 +53,23 @@ func main() {
 		s.Shutdown(tc)
 	}()
 
+	if database == "filestore" {
+		ticker := time.NewTicker(5 * time.Second)
+		defer ticker.Stop()
+
+		go func() {
+			for {
+				select {
+				case <-ticker.C:
+					newStore.WriteToFile()
+				case <-sigs:
+					newStore.WriteToFile()
+					break
+				}
+			}
+		}()
+	}
+
 	log.Fatal(s.ListenAndServe())
 }
 
@@ -81,5 +85,3 @@ func getConfig() (util.EnvVariables, error) {
 
 	return conf, nil
 }
-
-// func initApp() () {}

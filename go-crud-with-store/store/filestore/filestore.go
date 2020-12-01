@@ -10,10 +10,7 @@ import (
 
 	"github.com/pkg/errors"
 	"github.com/supercede/go-exercises/go-crud-with-store/models"
-	// "github.com/supercede/go-exercises/go-crud/books"
 )
-
-// var Books map[int]models.Book
 
 type FileStore struct {
 	path string
@@ -23,10 +20,7 @@ type FileStore struct {
 }
 
 func generateID() int {
-	// id := ksuid.New()
-	// return id.String()
 	id := time.Now().UnixNano() / (1 << 22)
-	fmt.Println(id)
 	return int(id)
 }
 

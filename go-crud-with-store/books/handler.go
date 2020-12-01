@@ -79,6 +79,7 @@ func (h *Handler) getBook(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	book, err := store.GetBook(intID)
@@ -102,6 +103,7 @@ func (h *Handler) updateBook(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	var b models.Book
 
