@@ -11,23 +11,19 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/pkg/errors"
 	"github.com/supercede/go-exercises/go-crud-with-store/books"
 	"github.com/supercede/go-exercises/go-crud-with-store/store"
 	"github.com/supercede/go-exercises/go-crud-with-store/util"
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("No .env file found")
-	}
-
-	conf, err := util.GetConfig()
+	conf, err := getConfig()
 	if err != nil {
 		log.Fatalf("Failed to read config: %v", err)
 	}
 
 	database := conf.DatabaseType
-
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
@@ -39,19 +35,17 @@ func main() {
 		newStore.ReadFromFile()
 	}
 
-	// ticker := time.NewTicker(5 * time.Second)
+	if database == "filestore" {
+		go func() {
+			ticker := time.NewTicker(5 * time.Second)
 
-	go func() {
-		ticker := time.NewTicker(5 * time.Second)
+			for range ticker.C {
+				fmt.Println("here")
 
-		for range ticker.C {
-			fmt.Println("here")
-
-			if database == "filestore" {
 				newStore.WriteToFile()
 			}
-		}
-	}()
+		}()
+	}
 
 	handler := books.Router(newStore)
 
@@ -67,7 +61,6 @@ func main() {
 		if database == "filestore" {
 			newStore.WriteToFile()
 		}
-		// os.Exit(0)
 		tc, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel()
 		s.Shutdown(tc)
@@ -75,3 +68,18 @@ func main() {
 
 	log.Fatal(s.ListenAndServe())
 }
+
+func getConfig() (util.EnvVariables, error) {
+	if err := godotenv.Load(); err != nil {
+		return util.EnvVariables{}, errors.Wrap(err, "failed to load env file")
+	}
+
+	conf, err := util.GetConfig()
+	if err != nil {
+		return util.EnvVariables{}, errors.Wrap(err, "failed to load config vars")
+	}
+
+	return conf, nil
+}
+
+// func initApp() () {}

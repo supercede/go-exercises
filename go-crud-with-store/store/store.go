@@ -10,6 +10,7 @@ import (
 	"github.com/supercede/go-exercises/go-crud-with-store/models"
 	"github.com/supercede/go-exercises/go-crud-with-store/store/boltdb"
 	"github.com/supercede/go-exercises/go-crud-with-store/store/filestore"
+	"github.com/supercede/go-exercises/go-crud-with-store/store/psql"
 	"github.com/supercede/go-exercises/go-crud-with-store/store/shared"
 	"github.com/supercede/go-exercises/go-crud-with-store/util"
 )
@@ -45,6 +46,14 @@ func New() (*Store, error) {
 		}
 
 		s, err = boltdb.New(filepath.Join(home, dbName))
+	case "postgres":
+		s, err = psql.New(conf.PGUsername,
+			conf.PGPassword,
+			conf.PGHost,
+			conf.PGName,
+		)
+
+		// s.DB.AutoMigrate()
 	default:
 		return nil, errors.New("Invalid Database type")
 	}

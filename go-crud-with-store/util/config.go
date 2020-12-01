@@ -6,9 +6,20 @@ import (
 )
 
 type EnvVariables struct {
-	DatabaseType string
-	FileDBPath   string
-	BoltDBName   string
+	DatabaseType string `default:"filestore"`
+	FileDBPath   string `default:"books.json"`
+	BoltDBName   string `default:"main.db"`
+	PGUsername   string
+	PGPassword   string
+	PGHost       string
+	PGName       string
+}
+
+type postgresConf struct {
+	PGUsername string
+	PGPassword string
+	PGHost     string
+	PGName     string
 }
 
 func GetConfig() (EnvVariables, error) {
@@ -17,7 +28,7 @@ func GetConfig() (EnvVariables, error) {
 
 	if err != nil {
 		// return log.F
-		return EnvVariables{}, errors.Wrap(err, "Failed to read env file")
+		return EnvVariables{}, errors.Wrap(err, "Failed to read env variables")
 	}
 
 	return e, nil
